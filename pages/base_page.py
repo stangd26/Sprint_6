@@ -10,6 +10,10 @@ class BasePage:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+    @allure.step("Открыть URL: {url}")
+    def open_url(self, url):
+        self.driver.get(url)
+
     # Найти видимый элемент
     @allure.step("Найти видимый элемент")
     def find(self, locator):
@@ -31,6 +35,13 @@ class BasePage:
             EC.element_to_be_clickable(locator)
         ).click()
 
+    # Нажать на найденный элемент
+    @allure.step("Нажать на найденный элемент")
+    def click_element(self, element):
+        self.scroll_to_element(element)
+        self.wait.until(lambda driver: element.is_displayed())
+        element.click()
+
     # Очистить поле и ввести значение
     @allure.step("Заполнить поле")
     def fill(self, locator, value):
@@ -43,6 +54,11 @@ class BasePage:
     def get_text(self, locator):
         return self.find(locator).text
 
+    # Получить текст найденного элемента
+    @allure.step("Получить текст найденного элемента")
+    def get_element_text(self, element):
+        return element.text
+    
     # Прокрутить страницу до элемента
     @allure.step("Прокрутить страницу к элементу")
     def scroll_to(self, locator):
@@ -52,3 +68,11 @@ class BasePage:
             "arguments[0].scrollIntoView({block: 'center'});",
             element
         )
+
+    # Прокурить страницу к найденному элементу
+    @allure.step("Прокрутить страницу к найденному элементу")
+    def scroll_to_element(self, element):
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});",
+            element
+        )        

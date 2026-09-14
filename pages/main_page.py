@@ -1,7 +1,5 @@
 import allure
 
-from selenium.webdriver.support import expected_conditions as EC
-
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 
@@ -10,7 +8,7 @@ class MainPage(BasePage):
 
     @allure.step("Открыть главную страницу")
     def open(self, url):
-        self.driver.get(url)
+        self.open_url(url)
 
     # Нажать верхнюю кнопку Заказать
     @allure.step("Нажать верхнюю кнопку Заказать")
@@ -26,37 +24,23 @@ class MainPage(BasePage):
     # Открыть вопрос по индексу
     @allure.step("Открыть вопрос FAQ №{index}")
     def click_faq_question(self, index):
-        buttons = self.wait.until(
-            EC.presence_of_all_elements_located(
-                MainPageLocators.FAQ_QUESTIONS
-            )
+        buttons = self.find_all(
+            MainPageLocators.FAQ_QUESTIONS
         )
 
         question = buttons[index]
 
-        self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});",
-            question
-        )
-
-        self.wait.until(
-            EC.element_to_be_clickable(
-                MainPageLocators.FAQ_QUESTIONS
-            )
-        )
-
-        question.click()
+        self.scroll_to_element(question)
+        self.click_element(question)
 
     # Получить ответ на вопрос по индексу
     @allure.step("Получить ответ FAQ №{index}")
     def get_faq_answer(self, index):
-        panels = self.wait.until(
-            EC.presence_of_all_elements_located(
-                MainPageLocators.FAQ_ANSWERS
-            )
+        panels = self.find_all(
+            MainPageLocators.FAQ_ANSWERS
         )
 
-        return panels[index].text
+        return self.get_element_text(panels[index])
 
     # Нажать на лого Самокат
     @allure.step("Нажать на лого Самокат")
