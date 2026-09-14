@@ -128,3 +128,24 @@ class OrderPageLocators:
         "//div[contains(@class, 'Order_Modal')]"
         "//button[normalize-space()='Нет']"
     )
+
+    METRO_OPTION = (
+        By.XPATH,
+        "//li[contains(@class, 'select-search__row')]"
+        "//button[contains(@class, 'select-search__option')]"
+        "[.//div[contains(@class, 'Order_Text__2broi') "
+        "and normalize-space()='{metro}']]"
+    )
+
+    DELIVERY_DATE_OPTION = (
+        By.XPATH,
+        "//div[contains(@class, 'react-datepicker__day')"
+        " and not(contains(@class, 'outside-month'))"
+        " and normalize-space()='{day}']"
+    )
+
+    RENTAL_PERIOD_OPTION = (
+        By.XPATH,
+        "//div[contains(@class, 'Dropdown-option')"
+        " and normalize-space()='{period}']"
+    )

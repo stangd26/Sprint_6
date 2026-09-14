@@ -1,5 +1,3 @@
-from selenium.webdriver.common.by import By
-
 from pages.base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
 
@@ -31,7 +29,7 @@ class OrderPage(BasePage):
             data["phone"]
         )
 
-    # Выбоать станцию метро
+    # Выбрать станцию метро
     def select_metro(self, metro):
         self.fill(
             OrderPageLocators.METRO,
@@ -39,11 +37,10 @@ class OrderPage(BasePage):
         )
 
         option = (
-            By.XPATH,
-            "//li[contains(@class, 'select-search__row')]"
-            "//button[contains(@class, 'select-search__option')]"
-            f"[.//div[contains(@class, 'Order_Text__2broi') "
-            f"and normalize-space()='{metro}']]"
+            OrderPageLocators.METRO_OPTION[0],
+            OrderPageLocators.METRO_OPTION[1].format(
+                metro=metro
+            )
         )
 
         self.click(option)
@@ -58,10 +55,10 @@ class OrderPage(BasePage):
         self.click(OrderPageLocators.DELIVERY_DATE)
 
         date_locator = (
-            By.XPATH,
-            f"//div[contains(@class, 'react-datepicker__day')"
-            f" and not(contains(@class, 'outside-month'))"
-            f" and normalize-space()='{day}']"
+            OrderPageLocators.DELIVERY_DATE_OPTION[0],
+            OrderPageLocators.DELIVERY_DATE_OPTION[1].format(
+                day=day
+            )
         )
 
         self.click(date_locator)
@@ -72,9 +69,10 @@ class OrderPage(BasePage):
         self.click(OrderPageLocators.RENTAL_PERIOD)
 
         option = (
-            By.XPATH,
-            f"//div[contains(@class, 'Dropdown-option')"
-            f" and normalize-space()='{period}']"
+            OrderPageLocators.RENTAL_PERIOD_OPTION[0],
+            OrderPageLocators.RENTAL_PERIOD_OPTION[1].format(
+                period=period
+            )
         )
 
         self.click(option)
