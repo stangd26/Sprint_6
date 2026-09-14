@@ -49,11 +49,7 @@ class TestNavigation:
             )
 
         with allure.step("Переключиться в новое окно"):
-            new_window = next(
-                window
-                for window in driver.window_handles
-                if window != original_window
-            )
+            new_window = (set(driver.window_handles) - set(old_windows)).pop()
 
             driver.switch_to.window(new_window)
 

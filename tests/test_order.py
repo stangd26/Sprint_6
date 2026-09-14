@@ -49,16 +49,11 @@ class TestOrder:
         with allure.step(
             f"Нажать точку входа: {entry_name}"
         ):
-            if entry_point == "header":
-                main_page.click_order_header()
-
-            elif entry_point == "bottom":
-                main_page.click_order_bottom()
-
-            else:
-                raise ValueError(
-                    f"Неизвестная точка входа: {entry_point}"
-                )
+            order_actions = {
+                "header": main_page.click_order_header,
+                "bottom": main_page.click_order_bottom,
+            }
+            order_actions[entry_point]()
 
         with allure.step("Заполнить данные пользователя"):
             order_page.fill_customer_data(order_data)
