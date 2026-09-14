@@ -1,3 +1,5 @@
+import allure
+
 from pages.base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
 
@@ -5,6 +7,7 @@ from locators.order_page_locators import OrderPageLocators
 class OrderPage(BasePage):
 
     # Заполнить первый этап заказа
+    @allure.step("Заполнить первый этап заказа")
     def fill_customer_data(self, data):
         
         self.fill(
@@ -30,6 +33,7 @@ class OrderPage(BasePage):
         )
 
     # Выбрать станцию метро
+    @allure.step("Выбрать станцию метро: {metro}")
     def select_metro(self, metro):
         self.fill(
             OrderPageLocators.METRO,
@@ -46,10 +50,12 @@ class OrderPage(BasePage):
         self.click(option)
 
     # Перейти ко вторму этапу заказа
+    @allure.step("Перейти ко второму этапу заказа")
     def click_next(self):
         self.click(OrderPageLocators.NEXT_BUTTON)
 
     # Выбрать дату
+    @allure.step("Выбрать дату доставки: {day}")
     def select_delivery_date(self, day):
         
         self.click(OrderPageLocators.DELIVERY_DATE)
@@ -64,6 +70,7 @@ class OrderPage(BasePage):
         self.click(date_locator)
 
     # Выбрать срок аренды
+    @allure.step("Выбрать срок аренды: {period}")
     def select_rental_period(self, period):
         
         self.click(OrderPageLocators.RENTAL_PERIOD)
@@ -78,6 +85,7 @@ class OrderPage(BasePage):
         self.click(option)
 
     # Выбрать цвет
+    @allure.step("Выбрать цвет самоката: {color}")
     def select_color(self, color):
         
         if color == "black":
@@ -92,6 +100,7 @@ class OrderPage(BasePage):
             )
 
     # Заполнить второй этап заказа
+    @allure.step("Заполнить второй этап заказа")
     def fill_order_details(self, data):
         
         self.select_delivery_date(
@@ -112,10 +121,12 @@ class OrderPage(BasePage):
         )
 
     # Нажать кнопку оформления заказа
+    @allure.step("Нажать кнопку оформления заказа")
     def click_order(self):
         self.click(OrderPageLocators.ORDER_BUTTON)
 
     # Подтвердить оформление заказа
+    @allure.step("Подтвердить оформление заказа")
     def confirm_order(self):
         self.scroll_to(OrderPageLocators.CONFIRM_ORDER_BUTTON)
         self.click(OrderPageLocators.CONFIRM_ORDER_BUTTON)
