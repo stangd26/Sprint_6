@@ -1,7 +1,5 @@
 import allure
 
-from selenium.webdriver.support.ui import WebDriverWait
-
 from data import BASE_URL, DZEN_URL_PART
 from pages.main_page import MainPage
 
@@ -20,11 +18,9 @@ class TestNavigation:
         with allure.step("Нажать логотип Самоката"):
             main_page.click_scooter_logo()
 
-        with allure.step(
-            "Проверить URL главной страницы"
-        ):
+        with allure.step("Проверить URL главной страницы"):
             assert (
-                driver.current_url.rstrip("/")
+                main_page.get_current_url().rstrip("/")
                 == BASE_URL.rstrip("/")
             )
 
@@ -37,25 +33,20 @@ class TestNavigation:
         with allure.step("Открыть главную страницу"):
             main_page.open(BASE_URL)
 
-        original_window = driver.current_window_handle
-        old_windows = driver.window_handles
+        with allure.step("Запомнить открытые окна"):
+            old_windows = main_page.get_window_handles()
 
         with allure.step("Нажать логотип Яндекса"):
             main_page.click_yandex_logo()
 
         with allure.step("Дождаться открытия нового окна"):
-            WebDriverWait(driver, 15).until(
-                lambda d: len(d.window_handles) > len(old_windows)
-            )
+            main_page.wait_for_new_window(old_windows)
 
         with allure.step("Переключиться в новое окно"):
-            new_window = (set(driver.window_handles) - set(old_windows)).pop()
+            main_page.switch_to_new_window(old_windows)
 
-            driver.switch_to.window(new_window)
+        with allure.step("Дождаться перехода в Дзен"):
+            main_page.wait_for_url_contains(DZEN_URL_PART)
 
         with allure.step("Проверить переход в Дзен"):
-            WebDriverWait(driver, 15).until(
-                lambda d: DZEN_URL_PART in d.current_url
-            )
-
-            assert DZEN_URL_PART in driver.current_url
+            assert main_page.is_url_contains(DZEN_URL_PART)

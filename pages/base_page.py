@@ -76,3 +76,39 @@ class BasePage:
             "arguments[0].scrollIntoView({block: 'center'});",
             element
         )        
+
+    @allure.step("Получить текущий URL")
+    def get_current_url(self):
+        return self.driver.current_url
+
+    @allure.step("Запомнить текущее окно")
+    def get_current_window(self):
+        return self.driver.current_window_handle
+
+    @allure.step("Получить открытые окна")
+    def get_window_handles(self):
+        return self.driver.window_handles
+
+    @allure.step("Дождаться открытия нового окна")
+    def wait_for_new_window(self, old_windows):
+        self.wait.until(
+            lambda driver: len(driver.window_handles) > len(old_windows)
+        )
+
+    @allure.step("Переключиться в новое окно")
+    def switch_to_new_window(self, old_windows):
+        new_window = (
+            set(self.driver.window_handles) - set(old_windows)
+        ).pop()
+
+        self.driver.switch_to.window(new_window)
+
+    @allure.step("Дождаться URL, содержащего: {url_part}")
+    def wait_for_url_contains(self, url_part):
+        self.wait.until(
+            EC.url_contains(url_part)
+        )
+
+    @allure.step("Проверить, что URL содержит: {url_part}")
+    def is_url_contains(self, url_part):
+        return url_part in self.driver.current_url
